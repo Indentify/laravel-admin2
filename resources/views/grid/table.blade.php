@@ -1,4 +1,8 @@
+@if($grid->getOption('boxClass') !== null)
+<div class="{{$grid->getOption('boxClass')}}">
+@else
 <div class="box grid-box">
+@endif
     @if(isset($title))
     <div class="box-header with-border">
         <h3 class="box-title"> {{ $title }}</h3>
@@ -25,7 +29,7 @@
     {!! $grid->renderHeader() !!}
 
     <!-- /.box-header -->
-    <div class="box-body table-responsive no-padding">
+    <div class="box-body table-responsive no-padding" style="min-height: 260px;">
         <table class="table table-hover grid-table" id="{{ $grid->tableID }}">
             <thead>
                 <tr>

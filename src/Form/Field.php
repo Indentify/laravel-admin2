@@ -258,6 +258,8 @@ class Field implements Renderable
      */
     public $isJsonType = false;
 
+    protected $labelOptions = [];
+
     /**
      * Field constructor.
      *
@@ -1434,6 +1436,7 @@ class Field implements Renderable
             'errorKey'    => $this->getErrorKey(),
             'attributes'  => $this->formatAttributes(),
             'placeholder' => $this->getPlaceholder(),
+            'labelOptionString'     => $this->getLabelOptionString(),
         ]);
     }
 
@@ -1571,5 +1574,23 @@ class Field implements Renderable
     public function __toString()
     {
         return $this->render()->render();
+    }
+
+    public function setLabelOptions($options)
+    {
+        return $this->labelOptions = $options;
+    }
+
+    private function getLabelOptionString()
+    {
+        $lableAttributeStr = '';
+        if ($this->labelOptions) {
+            foreach($this->labelOptions as $k => $v) {
+                if ($v) {
+                    $lableAttributeStr .= $k.'='.($v).' ';
+                }
+            }
+        }
+        return $lableAttributeStr;
     }
 }

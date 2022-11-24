@@ -1,4 +1,8 @@
+@if($grid->getOption('boxClass') !== null)
+<div class="{{$grid->getOption('boxClass')}}">
+@else
 <div class="box">
+@endif
     @if(isset($title))
     <div class="box-header with-border">
         <h3 class="box-title"> {{ $title }}</h3>
@@ -27,7 +31,7 @@
     <!-- /.box-header -->
     <div class="box-body table-responsive no-padding">
         <div class="tables-container">
-            <div class="table-wrap table-main">
+            <div class="table-wrap table-main" style="min-height:260px">
                 <table class="table grid-table" id="{{ $grid->tableID }}">
                     <thead>
                         <tr>
@@ -132,8 +136,13 @@
 
 
 <style>
+    .box-header.with-border {
+        border-bottom: none;
+    }
     .tables-container {
         position:relative;
+        border-top:1px solid #f4f4f4;
+        margin-top: 15px;
     }
 
     .tables-container table {

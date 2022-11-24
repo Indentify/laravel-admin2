@@ -136,6 +136,8 @@ class Grid
      */
     protected $renderingCallbacks = [];
 
+    protected $createBtnUrl;
+
     /**
      * Options for grid.
      *
@@ -619,14 +621,27 @@ class Grid
      */
     public function getCreateUrl()
     {
+        if (!$this->createBtnUrl) {
+            $this->createBtnUrl = $this->setCreateUrl();
+        }
+        return $this->createBtnUrl;
+    }
+
+    /**
+     * Get create url.
+     *
+     * @return string
+     */
+    public function setCreateUrl($action = 'create')
+    {
         $queryString = '';
 
         if ($constraints = $this->model()->getConstraints()) {
             $queryString = http_build_query($constraints);
         }
 
-        return sprintf(
-            '%s/create%s',
+        return $this->createBtnUrl = sprintf(
+            '%s/'.$action.'%s',
             $this->resource(),
             $queryString ? ('?'.$queryString) : ''
         );
@@ -935,5 +950,10 @@ class Grid
         $this->callRenderingCallback();
 
         return Admin::component($this->view, $this->variables());
+    }
+
+    public function getOption($key, $defaultValue = null)
+    {
+        return $this->options[$key] ?? $defaultValue;
     }
 }

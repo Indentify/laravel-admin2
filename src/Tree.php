@@ -69,6 +69,8 @@ class Tree implements Renderable
      */
     protected $nestableOptions = [];
 
+    protected $options = [];
+
     /**
      * Header tools.
      *
@@ -341,6 +343,7 @@ SCRIPT;
             'useCreate'  => $this->useCreate,
             'useSave'    => $this->useSave,
             'useRefresh' => $this->useRefresh,
+            'options'    => $this->options,
         ];
     }
 
@@ -384,4 +387,10 @@ SCRIPT;
     {
         return $this->render();
     }
+
+    public function setOptions($key,$value)
+    {
+        $this->options[$key] = $value;
+    }
+
 }

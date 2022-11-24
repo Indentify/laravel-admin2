@@ -54,6 +54,31 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- <li>
+                    <a class="feedback" href="javascript:void(0);" modal="app-admin-actions-feedback">
+                        <i class="fa fa-question"></i>
+                        <span>反馈</span>
+                    </a>
+                </li> -->
+
+                <!-- <li>
+                    <a href="javascript:void(0);" class="system" modal="app-admin-actions-system">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                </li> -->
+
+                <li>
+                    <a style="margin-top: 2px;" href="{{ admin_url('auth/lock') }}" title="lockscreen">
+                        <i style="font-size: 18px" class="fa fa-lock"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);" class="nav-fullscreen">
+                        <i class="fa fa-arrows-alt"></i>
+                    </a>
+                </li>
                 <!-- Control Sidebar Toggle Button -->
                 {{--<li>--}}
                     {{--<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>--}}
@@ -62,3 +87,80 @@
         </div>
     </nav>
 </header>
+<script>
+    $(document).ready(function() {
+        function launchFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullScreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+        $('.nav-fullscreen').click(function () {
+            if (document.fullscreenElement) {
+                exitFullscreen();
+            } else {
+                launchFullscreen(document.body)
+            }
+        });
+
+        $('.feedback').off('click').on('click', function () {
+                var data = $(this).data();
+                var modalId = $(this).attr('modal');
+                Object.assign(data, []);
+
+                $('#' + modalId).modal('show');
+                $('#' + modalId + ' form').off('submit').on('submit', function (e) {
+                    e.preventDefault();
+                    var form = this;
+                    var process = new Promise(function (resolve, reject) {
+                        Object.assign(data, {
+                            _token: $.admin.token,
+                            _action: 'App_Admin_Actions_Feedback',
+                        });
+
+                        var formData = new FormData(form);
+                        for (var key in data) {
+                            formData.append(key, data[key]);
+                        }
+
+                        $.ajax({
+                            method: 'POST',
+                            url: 'https://demo.laravel-admin.org/_handle_action_',
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+                                resolve(data);
+                                if (data.status === true) {
+                                    $('#' + modalId).modal('hide');
+                                }
+                            },
+                            error: function (request) {
+                                reject(request);
+                            }
+                        });
+                    });
+                    process.then(actionResolver).catch(actionCatcher);
+                });
+            });
+    });
+</script>

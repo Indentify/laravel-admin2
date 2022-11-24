@@ -3,7 +3,7 @@
 
 <div class="{{$viewClass['form-group']}} {{ $errors->has($listErrorKey) ? 'has-error' : '' }}">
 
-    <label class="{{$viewClass['label']}} control-label">{{$label}}</label>
+    <label {{ $labelOptionString}} class="{{$viewClass['label']}} control-label">{{$label}}</label>
 
     <div class="{{$viewClass['field']}}">
 
@@ -45,7 +45,9 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
+                    <td>
+                        @include('admin::form.help-block')
+                    </td>
                     <td>
                         <div class="{{ $column }}-add btn btn-success btn-sm pull-right">
                             <i class="fa fa-save"></i>&nbsp;{{ __('admin.new') }}

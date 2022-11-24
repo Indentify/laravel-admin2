@@ -1,4 +1,8 @@
+@if(isset($options['boxClass']))
+<div class="{{$options['boxClass']}}">
+@else
 <div class="box">
+@endif
 
     <div class="box-header">
 
@@ -29,7 +33,7 @@
 
         @if($useCreate)
         <div class="btn-group pull-right">
-            <a class="btn btn-success btn-sm" href="{{ url($path) }}/create"><i class="fa fa-save"></i><span class="hidden-xs">&nbsp;{{ trans('admin.new') }}</span></a>
+            <a class="btn btn-success btn-sm" href="{{ $options['createBtnUrl'] ??  url($path).'/create'}}"><i class="fa fa-save"></i><span class="hidden-xs">&nbsp;{{ trans('admin.new') }}</span></a>
         </div>
         @endif
 

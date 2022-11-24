@@ -1,7 +1,7 @@
 <div class="{{$viewClass['form-group']}} {!! !$errors->has($errorKey) ? '' : 'has-error' !!}">
 
-    <label for="{{$id}}" class="{{$viewClass['label']}} control-label">{{$label}}</label>
-
+    <label {{ $labelOptionString}} for="{{$id}}" class="{{$viewClass['label']}} control-label">{{$label}}</label>
+    
     <div class="{{$viewClass['field']}}">
 
         @include('admin::form.error')

@@ -1117,6 +1117,27 @@ class Form implements Renderable
     }
 
     /**
+     * Add a fieldset to form.
+     *
+     * @param string  $title
+     * @param Closure $setCallback
+     *
+     * @return Field\Fieldset
+     */
+    public function fieldsetExtend(string $title, Closure $setCallback,$params = [])
+    {
+        $fieldset = new Field\FieldsetExtend();
+
+        $this->html($fieldset->start($title,$params))->plain();
+
+        $setCallback($this);
+
+        $this->html($fieldset->end())->plain();
+
+        return $fieldset;
+    }
+
+    /**
      * Get validation messages.
      *
      * @param array $input
@@ -1574,5 +1595,10 @@ class Form implements Renderable
     public function getLayout(): Layout
     {
         return $this->layout;
+    }
+
+    public function getInputs()
+    {
+        return $this->inputs;
     }
 }
