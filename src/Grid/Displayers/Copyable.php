@@ -31,16 +31,26 @@ SCRIPT;
         Admin::script($script);
     }
 
-    public function display()
+    public function display($position = 'left')
     {
         $this->addScript();
 
         $content = $this->getColumn()->getOriginal();
 
-        return <<<HTML
-<a href="javascript:void(0);" class="grid-column-copyable text-muted" data-content="{$content}" title="Copied!" data-placement="bottom">
-    <i class="fa fa-copy"></i>
-</a>&nbsp;{$this->getValue()}
-HTML;
+        $html = '';
+        if ($content) {
+            $left = $right = '';
+            if ($position == 'left') {
+                $left = $this->getValue().'&nbsp;';
+            } else {
+                $right = '&nbsp;'.$this->getValue();
+            }
+            $html = <<<HTML
+            {$left}<a href="javascript:void(0);" class="grid-column-copyable text-muted" data-content="{$content}" title="Copied!" data-placement="bottom">
+                <i class="fa fa-copy"></i>
+            </a>{$right}
+            HTML;
+        }
+        return $html;
     }
 }
