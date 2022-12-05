@@ -682,7 +682,7 @@ EOT;
      *
      * @return mixed
      */
-    protected function renderTable()
+    protected function renderTable_bak()
     {
         $headers = [];
         $fields = [];
@@ -697,6 +697,64 @@ EOT;
                 /* Hide label and set field width 100% */
                 $field->setLabelClass(['hidden']);
                 $field->setWidth(12, 0);
+                $fields[] = $field->render();
+                $headers[] = $field->label();
+            }
+
+            /*
+             * Get and remove the last script of Admin::$script stack.
+             */
+            if ($field->getScript()) {
+                $scripts[] = array_pop(Admin::$script);
+            }
+        }
+
+        /* Build row elements */
+        $template = array_reduce($fields, function ($all, $field) {
+            $all .= "<td>{$field}</td>";
+
+            return $all;
+        }, '');
+
+        /* Build cell with hidden elements */
+        $template .= '<td class="hidden">'.implode('', $hidden).'</td>';
+
+        $this->setupScript(implode("\r\n", $scripts));
+
+        // specify a view to render.
+        $this->view = $this->views[$this->viewMode];
+
+        return parent::fieldRender([
+            'headers'      => $headers,
+            'forms'        => $this->buildRelatedForms(),
+            'template'     => $template,
+            'relationName' => $this->relationName,
+            'options'      => $this->options,
+        ]);
+    }
+
+    /**
+     * Render the `HasMany` field for table style.
+     *
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    protected function renderTable()
+    {
+        $headers = [];
+        $fields = [];
+        $hidden = [];
+        $scripts = [];
+
+        /* @var Field $field */
+        foreach ($this->buildNestedForm($this->column, $this->builder)->fields() as $field) {
+            if (is_a($field, Hidden::class)) {
+                $hidden[] = $field->render();
+            } else {
+                /* Hide label and set field width 100% */
+                //$field->setLabelClass(['hidden']);
+                //$field->setWidth(12, 0);
                 $fields[] = $field->render();
                 $headers[] = $field->label();
             }

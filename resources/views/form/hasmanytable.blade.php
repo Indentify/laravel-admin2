@@ -1,83 +1,59 @@
-<style>
-    td .form-group {
-        margin-bottom: 0 !important;
-    }
-</style>
-
 <div class="row">
-    <div {{ $labelOptionString}} class="{{$viewClass['label']}}"><h4 class="pull-right">{{ $label }}</h4></div>
+    <div class="{{$viewClass['label']}}" {{ $labelOptionString}}><h4 class="pull-right">{{ $label }}</h4></div>
+    <div class="{{$viewClass['field']}}"></div>
 </div>
 <hr style="margin-top: 0px;">
-<div class="row">
-    <div class="{{$viewClass['label']}}"></div>
-    <div class="{{$viewClass['field']}}">
-        <div id="has-many-{{$column}}" style="margin-top: 15px;">
-            <table class="table table-has-many has-many-{{$column}}">
-                <thead>
-                <tr>
-                    @foreach($headers as $header)
-                        <th>{{ $header }}</th>
-                    @endforeach
 
-                    <th class="hidden"></th>
+<div id="has-many-{{$column}}" style="margin-top: 15px;">
 
-                    @if($options['allowDelete'])
-                        <th></th>
-                    @endif
-                </tr>
-                </thead>
-                <tbody class="has-many-{{$column}}-forms">
-                @foreach($forms as $pk => $form)
-                    <tr class="has-many-{{$column}}-form fields-group">
 
-                        <?php $hidden = ''; ?>
+    <div class="has-many-{{$column}}-forms">
 
-                        @foreach($form->fields() as $field)
+        @foreach($forms as $pk => $form)
+        <div class="has-many-{{$column}}-form fields-group">
 
-                            @if (is_a($field, \Encore\Admin\Form\Field\Hidden::class))
-                                <?php $hidden .= $field->render(); ?>
-                                @continue
-                            @endif
+            @foreach($form->fields() as $field)
+            {!! $field->render() !!}
+            @endforeach
 
-                            <td>{!! $field->setLabelClass(['hidden'])->setWidth(12, 0)->render() !!}</td>
-                        @endforeach
-
-                        <td class="hidden">{!! $hidden !!}</td>
-
-                        @if($options['allowDelete'])
-                            <td class="form-group">
-                                <div>
-                                    <div class="remove btn btn-warning btn-sm pull-right"><i class="fa fa-trash">&nbsp;</i>{{ trans('admin.remove') }}</div>
-                                </div>
-                            </td>
-                        @endif
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-
-            <template class="{{$column}}-tpl">
-                <tr class="has-many-{{$column}}-form fields-group">
-
-                    {!! $template !!}
-
-                    <td class="form-group">
-                        <div>
-                            <div class="remove btn btn-warning btn-sm pull-right"><i class="fa fa-trash">&nbsp;</i>{{ trans('admin.remove') }}</div>
-                        </div>
-                    </td>
-                </tr>
-            </template>
-
-            @if($options['allowCreate'])
-                <div class="form-group">
+            @if($options['allowDelete'])
+                <div class="form-group" style="margin: 0">
+                    <div class="{{$viewClass['label']}}"></div>
                     <div class="{{$viewClass['field']}}">
-                        <div class="add btn btn-success btn-sm"><i class="fa fa-save"></i>&nbsp;{{ trans('admin.new') }}</div>
+                        <div class="remove btn btn-warning btn-sm pull-right"><i class="fa fa-trash">&nbsp;</i>{{ trans('admin.remove') }}</div>
                     </div>
                 </div>
             @endif
+            
+            <hr />
+
         </div>
+        @endforeach
     </div>
+
+    <template class="{{$column}}-tpl">
+        <div class="has-many-{{$column}}-form fields-group">
+
+            {!! $template !!}
+
+            <div class="form-group" style="margin: 0">
+                <div class="{{$viewClass['label']}}"></div>
+                <div class="{{$viewClass['field']}}">
+                    <div class="remove btn btn-warning btn-sm pull-right"><i class="fa fa-trash">&nbsp;</i>{{ trans('admin.remove') }}</div>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </template>
+
+    @if($options['allowCreate'])
+        <div class="form-group">
+            <div class="{{$viewClass['label']}}"></div>
+            <div class="{{$viewClass['field']}}">
+                <div class="add btn btn-success btn-sm"><i class="fa fa-save"></i>&nbsp;{{ trans('admin.new') }}</div>
+            </div>
+        </div>
+    @endif
 </div>
 
 <hr style="margin-top: 0px;">
