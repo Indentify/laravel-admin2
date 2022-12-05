@@ -34,6 +34,8 @@ SCRIPT;
     INTRO;
         }
 
+        $in = $this->params['in'] ?? '';
+
 
         return <<<HTML
 <div>
@@ -44,7 +46,7 @@ SCRIPT;
         </a>
       </span>
     </div>
-    <div class="collapse" id="{$this->name}">
+    <div class="collapse {$in}" id="{$this->name}">
     {$intro}
 HTML;
     }
